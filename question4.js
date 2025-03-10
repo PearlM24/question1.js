@@ -1,27 +1,14 @@
 const express = require('express');  
 const app = express();  
-const port = 3000;  
+const port = 3000;
 
-app.use(express.json());  
+let tasks = [
+  { id: 1, name: 'Task 1', description: 'Description of Task 1' },
+  { id: 2, name: 'Task 2', description: 'Description of Task 2' }
+];
 
+app.use(express.json()); // Middleware to parse JSON request bodies
 
-let tasks = [];  
-let nextId = 1; 
-
-  
-app.post('/tasks', (req, res) => {  
-  const { name, description } = req.body;  
-  const newTask = { id: nextId++, name, description };  
-  tasks.push(newTask);  
-  res.status(201).json(newTask);  
-});  
-
- 
-app.get('/tasks', (req, res) => {  
-  res.json(tasks);  
-});  
-
-  
 app.put('/tasks/:id', (req, res) => {  
   const taskId = parseInt(req.params.id);  
   const { name, description } = req.body;  
@@ -36,7 +23,6 @@ app.put('/tasks/:id', (req, res) => {
   res.json(task);  
 });  
 
- 
 app.delete('/tasks/:id', (req, res) => {  
   const taskId = parseInt(req.params.id);  
   const taskIndex = tasks.findIndex(t => t.id === taskId);  
@@ -48,7 +34,7 @@ app.delete('/tasks/:id', (req, res) => {
   tasks.splice(taskIndex, 1);  
   res.status(204).send();  
 });  
- 
+
 app.listen(port, () => {  
-  console.log(Server listening at http://localhost:${port});  
-});  
+  console.log(`Server listening at http://localhost:${port}`);  
+});
